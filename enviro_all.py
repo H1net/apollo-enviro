@@ -7,7 +7,7 @@ from pimoroni_i2c import PimoroniI2C
 from breakout_ltr559 import BreakoutLTR559
 from adcfft import ADCFFT
 # comment out the next line if no particulate sensor
-from pms5003 import PMS5003
+# from pms5003 import PMS5003
 
 """
 This example reads from all the sensors on Enviro+.
@@ -137,12 +137,12 @@ adcfft = ADCFFT()
 
 # configure the PMS5003 for Enviro+
 # comment out this section if no particulate sensor
-pms5003 = PMS5003(
-    uart=UART(1, tx=Pin(8), rx=Pin(9), baudrate=9600),
-    pin_enable=Pin(3),
-    pin_reset=Pin(2),
-    mode="active"
-)
+#pms5003 = PMS5003(
+#    uart=UART(1, tx=Pin(8), rx=Pin(9), baudrate=9600),
+#    pin_enable=Pin(3),
+#    pin_reset=Pin(2),
+#    mode="active"
+#)
 
 # some constants we'll use for drawing
 WHITE = display.create_pen(255, 255, 255)

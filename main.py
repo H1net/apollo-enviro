@@ -21,11 +21,11 @@ Posts results via MQTT.
 TEMPERATURE_OFFSET = 3
 
 # MQTT broker settings
-CLIENT_ID = "EnviroPlus"
-SERVER_ADDRESS = "192.168.50.54"
-MQTT_USERNAME = "mqttclient"
-MQTT_PASSWORD = "adgjl13579"
-UPDATE_INTERVAL = 60  # how often to post MQTT data, in seconds
+CLIENT_ID = WIFI_CONFIG.CLIENT_ID
+SERVER_ADDRESS = WIFI_CONFIG.SERVER_ADDRESS
+MQTT_USERNAME = WIFI_CONFIG.MQTT_USERNAME
+MQTT_PASSWORD = WIFI_CONFIG.MQTT_PASSWORD
+UPDATE_INTERVAL = WIFI_CONFIG.UPDATE_INTERVAL  # how often to post MQTT data, in seconds
 
 
 def status_handler(mode, status, ip):
