@@ -5,7 +5,7 @@ from pimoroni import RGBLED, Button
 from breakout_bme68x import BreakoutBME68X, STATUS_HEATER_STABLE
 from pimoroni_i2c import PimoroniI2C
 from breakout_ltr559 import BreakoutLTR559
-#from pms5003 import PMS5003
+from pms5003 import PMS5003
 import umqtt.simple
 import WIFI_CONFIG
 from network_manager import NetworkManager
@@ -18,7 +18,7 @@ Posts results via MQTT.
 """
 
 # change this to adjust temperature compensation
-TEMPERATURE_OFFSET = 3
+TEMPERATURE_OFFSET = 0
 
 # MQTT broker settings
 CLIENT_ID = WIFI_CONFIG.CLIENT_ID
@@ -72,12 +72,12 @@ ltr = BreakoutLTR559(i2c)
 mic = ADC(Pin(26))
 
 # configure the PMS5003 for Enviro+
-#pms5003 = PMS5003(
-#    uart=UART(1, tx=Pin(8), rx=Pin(9), baudrate=9600),
-#    pin_enable=Pin(3),
-#    pin_reset=Pin(2),
-#    mode="active"
-#)
+pms5003 = PMS5003(
+   uart=UART(1, tx=Pin(8), rx=Pin(9), baudrate=9600),
+   pin_enable=Pin(3),
+   pin_reset=Pin(2),
+   mode="active"
+)
 
 # sets up MQTT
 mqtt_client = umqtt.simple.MQTTClient(client_id=CLIENT_ID, server=SERVER_ADDRESS, user=MQTT_USERNAME, password=MQTT_PASSWORD, keepalive=30)
@@ -120,7 +120,7 @@ while True:
     mic_reading = mic.read_u16()
 
     # read particle sensor
-    #particulate_reading = pms5003.read()
+    particulate_reading = pms5003.read()
 
     if heater == "Stable" and ltr_reading is not None:
         led.set_rgb(0, 0, 0)
@@ -135,9 +135,9 @@ while True:
                 mqtt_client.publish(topic="EnviroGas", msg=str(gas))
                 mqtt_client.publish(topic="EnviroLux", msg=str(lux))
                 mqtt_client.publish(topic="EnviroMic", msg=str(mic_reading))
-                #mqtt_client.publish(topic="EnviroParticulates1_0", msg=str(particulate_reading.pm_ug_per_m3(1.0)))
-                #mqtt_client.publish(topic="EnviroParticulates2_5", msg=str(particulate_reading.pm_ug_per_m3(2.5)))
-                #mqtt_client.publish(topic="EnviroParticulates10", msg=str(particulate_reading.pm_ug_per_m3(10)))
+                mqtt_client.publish(topic="EnviroParticulates1_0", msg=str(particulate_reading.pm_ug_per_m3(1.0)))
+                mqtt_client.publish(topic="EnviroParticulates2_5", msg=str(particulate_reading.pm_ug_per_m3(2.5)))
+                mqtt_client.publish(topic="EnviroParticulates10", msg=str(particulate_reading.pm_ug_per_m3(10)))
                 mqtt_client.disconnect()
                 mqtt_success = True
                 mqtt_time = time.ticks_ms()
